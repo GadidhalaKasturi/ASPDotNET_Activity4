@@ -91,5 +91,12 @@ namespace AdvWorksBL
             List<ProductsDTO> prodLstFromDAL = dalObj.FetchProductsListUsingEF();
             return prodLstFromDAL;
         }
+
+        public List<ProductsDTO> FetchProductsMaxMin()
+        {
+            List<ProductsDTO> lsProduct = new List<ProductsDTO>();
+            return lsProduct;
+        }
+        
     }
 }

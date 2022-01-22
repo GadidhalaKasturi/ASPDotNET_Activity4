@@ -12,5 +12,7 @@ namespace AdvWorksDTO
         public string ProdName { get; set; }
         public string ProdNum { get; set; }
         public decimal ProdListPrice { get; set; }
+        
+
     }
 }

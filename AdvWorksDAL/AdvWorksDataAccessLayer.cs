@@ -42,7 +42,7 @@ namespace AdvWorksDAL
         {
             try
             {
-                cmdObj = new SqlCommand(@"SELECT Name,GroupName FROM HumanResources.Department",conObj);
+                cmdObj = new SqlCommand(@"SELECT Name,GroupName FROM HumanResources.Department", conObj);
                 conObj.Open();
                 SqlDataReader drDept = cmdObj.ExecuteReader();
                 //while (drDept.Read())
@@ -111,7 +111,7 @@ namespace AdvWorksDAL
                 deptObj.Name = newDeptObj.DeptName;
                 deptObj.GroupName = newDeptObj.DeptGroupName;
                 deptObj.ModifiedDate = System.DateTime.Now;
-                
+
                 contextObj.Departments.Add(deptObj);
                 return contextObj.SaveChanges();
             }
@@ -210,12 +210,12 @@ namespace AdvWorksDAL
                 //contextObj.Products.ToList();
                 //var lstProdListPrice = contextObj.Products.Where(w => w.ListPrice>100).OrderBy(o => o.ListPrice).ToList();
                 var result = (from prod in contextObj.Products
-                              where prod.ListPrice>100
+                              where prod.ListPrice > 100
                               orderby prod.ListPrice ascending
                               select prod).ToList();
                 List<Product> lstProductsFromDB = contextObj.Products.ToList();
                 List<ProductsDTO> lstProducts = new List<ProductsDTO>();
-                foreach(var prod in result)
+                foreach (var prod in result)
                 {
                     lstProducts.Add(new ProductsDTO()
                     {
@@ -235,12 +235,40 @@ namespace AdvWorksDAL
                 //        ProdListPrice = prod.ListPrice,
                 //    });
                 //}
-            return lstProducts;
+                return lstProducts;
             }
             catch (Exception ex)
             {
 
                 throw ex;
+            }
+        }
+        public List<ProductsDTO> FetchProductsMaxMin(int from, int to)
+        {
+            try
+            {
+
+                SqlCommand conOb = new SqlCommand(@"select Name, ProductId, Color from [Production].[Product] where listPrice>" + from + "and ListPrice<" + to, conObj);
+                conObj.Open();
+                SqlDataReader dept = conOb.ExecuteReader();
+
+                List<ProductsDTO> lsProduct = new List<ProductsDTO>();
+                while (dept.Read())
+                {
+                    ProductsDTO deptDTO = new ProductsDTO();
+                    deptDTO.ProdName = dept["Name"].ToString();
+                    deptDTO.ProdNum = dept["Num"].ToString();
+                    lsProduct.Add(deptDTO);
+                }
+                return lsProduct;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                conObj.Close();
             }
         }
     }
